@@ -8,10 +8,10 @@ const cardRouter = require('./cards');
 const login = require('./login');
 const createUser = require('./createUsers');
 const { reqLogger, errLogger } = require('../middlewares/logger');
+const header = require('../middlewares/headers');
 // const { route } = require('./users');
-
+router.use(header);
 router.use(reqLogger);
-
 router.use('/signin', login);
 router.use('/signup', createUser);
 router.use(auth);
