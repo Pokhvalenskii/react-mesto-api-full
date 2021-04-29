@@ -152,7 +152,9 @@ function App() {
   // }
 
   const checkLoggedIn = useCallback(() => {
-    const jwt = localStorage.getItem('jwt')
+    // const jwt = localStorage.getItem('jwt')
+    const jwt = document.cookie.jwt;
+
     if(jwt) {
       auth.validityJWT(jwt)
         .then(res => {
