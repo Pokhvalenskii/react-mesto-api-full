@@ -4,6 +4,7 @@ const UnauthorizedError = require('../errors/unauthorized-err');
 require('dotenv').config();
 
 const { JWT_TOKEN } = process.env;
+// const JWT_TOKEN = 'aboba-secret-word';
 
 // функция для работы с печеньками от постмана
 function postmanCookie(req) {
@@ -18,8 +19,8 @@ function postmanCookie(req) {
 }
 
 const auth = (req, res, next) => {
-  //const token = postmanCookie(req);
-  const token = req.cookie.jwt;
+  const token = postmanCookie(req);
+  // const token = req.cookie.jwt;
   if (!token) {
     next(new UnauthorizedError());
   } else {
