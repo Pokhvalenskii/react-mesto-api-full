@@ -3,8 +3,8 @@ import { useContext } from 'react';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 
 function Main (props) {
-  const currentUser = useContext(CurrentUserContext)
-
+  const currentUser = useContext(CurrentUserContext);
+  console.log('CONTEXT: ', currentUser);
   return(
     <main>
       <section className="profile">

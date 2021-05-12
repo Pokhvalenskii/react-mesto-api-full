@@ -1,8 +1,9 @@
 class Api {
   constructor(date){
     this._urlApi = date.urlApi;
-    this._token = date.token; // 8675e632-7ad1-4f28-9202-69cb55994239
-    this._groupId = date.groupId; // cohort-19
+    this._token = date.token;
+    // this._token = date.token; // 8675e632-7ad1-4f28-9202-69cb55994239
+    // this._groupId = date.groupId; // cohort-19
   }
 
   _checkRes(res){
@@ -12,26 +13,31 @@ class Api {
     return Promise.reject(`Ошибка: ${res.status}`);
   }
 
+// запрос на получение карточек
   getInitialCards() {
-    return fetch(`${this._urlApi}${this._groupId}/cards`, {
+    console.log('return getInitialCards');
+    return fetch(`${this._urlApi}/cards`, {
       headers: {
-        authorization: this._token,
+        "Content-Type": "application/json",
+        "Authorization" : `Bearer ${this._token}`
       }
     })
       .then(this._checkRes).catch(error => console.log(`${error}`));
   }
 
   getInitialUser() {
-    return fetch(`${this._urlApi}${this._groupId}/users/me`, {
+    console.log('return getInitialUser');
+    return fetch(`${this._urlApi}/users/me`, {
       headers: {
-        authorization: this._token,
+        "Content-Type": "application/json",
+        "Authorization" : `Bearer ${this._token}`
       }
     })
       .then(this._checkRes).catch(error => console.log(`${error}`));
   }
 
   editProfile(name, status) {
-    return fetch(`${this._urlApi}${this._groupId}/users/me`, {
+    return fetch(`${this._urlApi}/users/me`, {
       method: 'PATCH',
       headers: {
         authorization: this._token, //8675e632-7ad1-4f28-9202-69cb55994239
@@ -46,10 +52,10 @@ class Api {
   }
 
   addCard(name, link) {
-    return fetch(`${this._urlApi}${this._groupId}/cards`, {
+    return fetch(`${this._urlApi}/cards`, {
       method: 'POST',
       headers: {
-        authorization: this._token,
+        "Authorization" : `Bearer ${this._token}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
@@ -61,7 +67,7 @@ class Api {
   }
 
   deleteCard(cardId) {
-    return fetch(`${this._urlApi}${this._groupId}/cards/${cardId}`, {
+    return fetch(`${this._urlApi}/cards/${cardId}`, {
       method: 'DELETE',
       headers: {
         authorization: this._token,
@@ -71,29 +77,32 @@ class Api {
   }
 
   like(cardId) {
-    return fetch(`${this._urlApi}${this._groupId}/cards/likes/${cardId}`, {
+    return fetch(`${this._urlApi}/cards/${cardId}/likes`, {
       method: 'PUT',
       headers: {
-        authorization: this._token,
+        "Content-Type": "application/json",
+        "Authorization" : `Bearer ${this._token}`
       }
     })
       .then(this._checkRes).catch(error => console.log(`${error}`));
   }
+
   removeLike(cardId) {
-    return fetch(`${this._urlApi}${this._groupId}/cards/likes/${cardId}`, {
+    return fetch(`${this._urlApi}/cards/${cardId}/likes`, {
       method: 'DELETE',
       headers: {
-        authorization: this._token,
+        // "Content-Type": "application/json",
+        "Authorization" : `Bearer ${this._token}`
       }
     })
       .then(this._checkRes).catch(error => console.log(`${error}`));
   }
 
   editAvatar(linkAvatar) {
-    return fetch(`${this._urlApi}${this._groupId}/users/me/avatar`, {
+    return fetch(`${this._urlApi}/users/me/avatar`, {
       method: 'PATCH',
       headers: {
-        authorization: this._token,
+        "Authorization" : `Bearer ${this._token}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
@@ -105,13 +114,12 @@ class Api {
 }
 
 const api = new Api({
-  urlApi: 'https://mesto.nomoreparties.co/v1/',
-  token: '8675e632-7ad1-4f28-9202-69cb55994239',
-  groupId: 'cohort-19'
+  urlApi: 'http://localhost:2999',
+  token: localStorage.getItem('jwt'),
 })
 
 export default api;
-///test
+
 
 
 

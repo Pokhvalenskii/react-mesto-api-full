@@ -25,7 +25,6 @@ function App() {
   const [isSuccessPopup, setIsSuccessPopup] = useState(false)
   const [isFailPopup, setIsFailPopup] = useState(false)
 
-
   const [selectedCard, setSelectedCard] = useState(false);
   const [cardInfo, setCardInfo] = useState({});
   const [currentUser, setCurrentUser] = useState({});
@@ -34,6 +33,7 @@ function App() {
   useEffect(() => {
     Promise.all([api.getInitialUser(), api.getInitialCards()])
     .then(value => {
+      console.log('VALUE: ', value)
       setCurrentUser(value[0])
       setCards(value[1])
     }).catch(error => console.log(`${error}`));
@@ -42,6 +42,7 @@ function App() {
   const handleUpdateUser = (data) => {
     api.editProfile(data.name, data.about)
       .then((res) => {
+        console.log('RESPONSE: ', res)
         setCurrentUser(res)
         closeAllPopups();
       }).catch(error => console.log(`${error}`))
@@ -94,8 +95,8 @@ function App() {
   }
 
   function handleCardLike(card) {
-    const isLiked = card.likes.some(i => i._id === currentUser._id);
-
+    const isLiked = card.likes.some(i => i === currentUser._id);
+    // console.log('card', card.likes, currentUser._id)
     if(!isLiked) {
       api.like(card._id)
       .then((newCard) => {
@@ -105,6 +106,7 @@ function App() {
     } else {
       api.removeLike(card._id)
         .then((newCard) => {
+          console.log('remove like')
           const newCards = cards.map((item) => item._id === card._id ? newCard : item);
           setCards(newCards)
         }).catch(error => console.log(`${error}`))
@@ -136,11 +138,11 @@ function App() {
   function handleAuthorize(email, password) {
     return auth.authorize(email, password)
       .then(res => {
-        // console.log('RES authorize: ', res.token)
+        console.log('RES authorize: ', res)
         setLoggedIn(true);
         setUserEmail(email);
         localStorage.setItem('jwt', res.token);
-        // console.log('local storage ', localStorage.getItem('jwt'))
+        console.log('local storage ', localStorage.getItem('jwt'))
       }).catch(() => {
         setIsFailPopup(true);
       })
@@ -152,14 +154,15 @@ function App() {
   // }
 
   const checkLoggedIn = useCallback(() => {
-    // const jwt = localStorage.getItem('jwt')
-    const jwt = document.cookie.jwt;
+    const jwt = localStorage.getItem('jwt')
+    console.log('jwt: ', jwt)
+    // const jwt = document.cookie.jwt;
 
     if(jwt) {
       auth.validityJWT(jwt)
         .then(res => {
           setLoggedIn(true);
-          setUserEmail(res.data.email)
+          setUserEmail(res.email)
           history.push('/');
         })
     }
