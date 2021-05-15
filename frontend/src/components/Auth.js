@@ -1,6 +1,5 @@
-export const BASE_URL = 'http://localhost:2999'; //change / https://auth.nomoreparties.co
-
-const token = '8675e632-7ad1-4f28-9202-69cb55994239';
+export const BASE_URL = 'http://localhost:2999'; //change 'http://api.lenskii.yandex15.nomoredomains.icu'
+// const token = '8675e632-7ad1-4f28-9202-69cb55994239';
 export const register = (email, password) => {
   console.log('register')
   return fetch(`${BASE_URL}/signup`, {

@@ -114,7 +114,7 @@ class Api {
 }
 
 const api = new Api({
-  urlApi: 'http://localhost:2999',
+  urlApi: 'http://localhost:2999', // http://api.lenskii.yandex15.nomoredomains.icu
   // token: localStorage.getItem('jwt'),
 })
 
