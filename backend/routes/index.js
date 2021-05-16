@@ -9,20 +9,28 @@ const cardRouter = require('./cards');
 const login = require('./login');
 const createUser = require('./createUsers');
 const { reqLogger, errLogger } = require('../middlewares/logger');
+// const { route } = require('./users');
 
-const corsWhiteList = ['http://localhost:3000', 'https://localhost:3000'];
+// const corsWhiteList = ['http://localhost:3000', 'https://localhost:3000'];
 
-const corsOptions = {
-  origin: (origin, callback) => {
-    if (corsWhiteList.indexOf(origin) !== -1) {
-      callback(null, true);
-    }
-  },
-  credentials: true,
-};
+// const corsOptions = {
+//   origin: (origin, callback) => {
+//     if (corsWhiteList.indexOf(origin) !== -1) {
+//       callback(null, true);
+//     }
+//   },
+//   credentials: true,
+// };
 
 router.use(reqLogger);
-router.use(cors(corsOptions));
+router.use(cors());
+
+router.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
+
 router.use('/signin', login);
 router.use('/signup', createUser);
 router.use(auth);

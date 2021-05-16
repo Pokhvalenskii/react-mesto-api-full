@@ -1,9 +1,6 @@
 class Api {
   constructor(date){
     this._urlApi = date.urlApi;
-    // this._token = date.token;
-    // this._token = date.token; // 8675e632-7ad1-4f28-9202-69cb55994239
-    // this._groupId = date.groupId; // cohort-19
   }
 
   _checkRes(res){
@@ -13,9 +10,7 @@ class Api {
     return Promise.reject(`Ошибка: ${res.status}`);
   }
 
-// запрос на получение карточек
   getInitialCards(token) {
-    console.log('return getInitialCards');
     return fetch(`${this._urlApi}/cards`, {
       headers: {
         "Content-Type": "application/json",
@@ -26,7 +21,6 @@ class Api {
   }
 
   getInitialUser(token) {
-    console.log('return getInitialUser');
     return fetch(`${this._urlApi}/users/me`, {
       headers: {
         "Content-Type": "application/json",
@@ -40,7 +34,7 @@ class Api {
     return fetch(`${this._urlApi}/users/me`, {
       method: 'PATCH',
       headers: {
-        "Authorization" : `Bearer ${token}`, //8675e632-7ad1-4f28-9202-69cb55994239
+        "Authorization" : `Bearer ${token}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
@@ -91,7 +85,6 @@ class Api {
     return fetch(`${this._urlApi}/cards/${cardId}/likes`, {
       method: 'DELETE',
       headers: {
-        // "Content-Type": "application/json",
         "Authorization" : `Bearer ${token}`
       }
     })
@@ -114,8 +107,7 @@ class Api {
 }
 
 const api = new Api({
-  urlApi: 'http://localhost:2999', // http://api.lenskii.yandex15.nomoredomains.icu
-  // token: localStorage.getItem('jwt'),
+  urlApi: 'http://localhost:2999',
 })
 
 export default api;

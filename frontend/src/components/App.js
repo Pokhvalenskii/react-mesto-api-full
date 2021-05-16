@@ -8,9 +8,8 @@ import EditProfilePopup from "./EditProfilePopup.js";
 import EditAvatarPopup from "./EditAvatarPopup.js";
 import AddPlacePopup from './AddPlacePopup.js';
 import { useState, useEffect, useCallback } from 'react';
-import { Route, Switch, Redirect, BrowserRouter, useHistory } from 'react-router-dom';
+import { Route, Switch, useHistory } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute.js';
-
 import Login from './Login.js';
 import Register from './Register.js';
 import PopupResponse from './PopupResponse.js';
@@ -30,17 +29,12 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
 
-  // if(localStorage.getItem('jwt') === null) {
-  //   localStorage.setItem('jwt', 'qwerty')
-  // }
   const JWTtoken = localStorage.getItem('jwt');
 
   useEffect(() => {
-    console.log('TOKEN', JWTtoken)
     if(JWTtoken !== null) {
       Promise.all([api.getInitialUser(JWTtoken), api.getInitialCards(JWTtoken)])
       .then(value => {
-        console.log('VALUE1: ', value)
         setCurrentUser(value[0])
         setCards(value[1])
       }).catch(error => console.log(`${error}`));
@@ -50,7 +44,6 @@ function App() {
   const handleUpdateUser = (data) => {
     api.editProfile(data.name, data.about, JWTtoken)
       .then((res) => {
-        console.log('RESPONSE: ', res)
         setCurrentUser(res)
         closeAllPopups();
       }).catch(error => console.log(`${error}`))
@@ -60,7 +53,6 @@ function App() {
     api.editAvatar(url, JWTtoken)
       .then((res) => {
         closeAllPopups();
-        // console.log('RES', res)
         setCurrentUser(res);
       }).catch(error => console.log(`${error}`))
   }
@@ -104,7 +96,6 @@ function App() {
 
   function handleCardLike(card) {
     const isLiked = card.likes.some(i => i === currentUser._id);
-    // console.log('card', card.likes, currentUser._id)
     if(!isLiked) {
       api.like(card._id, JWTtoken)
       .then((newCard) => {
@@ -114,7 +105,6 @@ function App() {
     } else {
       api.removeLike(card._id, JWTtoken)
         .then((newCard) => {
-          console.log('remove like')
           const newCards = cards.map((item) => item._id === card._id ? newCard : item);
           setCards(newCards)
         }).catch(error => console.log(`${error}`))
@@ -138,7 +128,6 @@ function App() {
   function handleRegister(email, password) {
     auth.register(email, password)
       .then(res => {
-        // console.log('RES: ', res)
         setUserEmail(email);
         setIsSuccessPopup(true)
       })
@@ -146,20 +135,16 @@ function App() {
   function handleAuthorize(email, password) {
     return auth.authorize(email, password)
       .then(res => {
-        console.log('RES authorize: ', res) //инициализировать при логине
         setLoggedIn(true);
         setUserEmail(email);
         api.getInitialUser(res.token).then(user => {
-          console.log('apiUser: ', user);
           setCurrentUser(user);
         })
         api.getInitialCards(res.token).then(card => {
-          console.log('apiUser: ', card);
           setCards(card);
         })
         localStorage.setItem('jwt', res.token);
 
-        console.log('local storage ', localStorage.getItem('jwt'))
       }).catch(() => {
         setIsFailPopup(true);
       })
@@ -172,8 +157,6 @@ function App() {
 
   const checkLoggedIn = useCallback(() => {
     const jwt = localStorage.getItem('jwt')
-    console.log('jwt: ', jwt)
-    // const jwt = document.cookie.jwt;
 
     if(jwt) {
       auth.validityJWT(jwt)

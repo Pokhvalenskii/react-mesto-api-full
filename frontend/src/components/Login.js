@@ -1,5 +1,5 @@
 import logo from '../images/logo.svg'
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import InfoTooltip from './InfoTooltip.js';
 import { useState } from 'react';
 

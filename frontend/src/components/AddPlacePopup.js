@@ -7,7 +7,6 @@ function AddPlacePopup(props) {
   const imageNameRef = useRef();
   function handleSubmit(e) {
     e.preventDefault();
-    // console.log('submit ADD, URL: ', urlRef.current.value, ' NAME: ', imageNameRef.current.value);
     props.handleAddCard({
       name: imageNameRef.current.value,
       link: urlRef.current.value
