@@ -8,8 +8,7 @@ const ServerError = require('../errors/server-error');
 const ConflictError = require('../errors/conflict-err');
 const BadRequestError = require('../errors/bad-request-err');
 
-// const { JWT_TOKEN = 'dev-key' } = process.env;
-const JWT_TOKEN = 'secret';
+const { JWT_TOKEN = 'dev-key' } = process.env;
 
 const signInUser = (req, res, next) => {
   const { email, password } = req.body;

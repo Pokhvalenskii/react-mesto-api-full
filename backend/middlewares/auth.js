@@ -3,8 +3,7 @@ const UnauthorizedError = require('../errors/unauthorized-err');
 
 require('dotenv').config();
 
-// const { JWT_TOKEN = 'secret' } = process.env;
-const JWT_TOKEN = 'secret';
+const { JWT_TOKEN = 'dev-key' } = process.env;
 
 // функция для работы с печеньками от постмана
 // function postmanCookie(req) {
@@ -21,7 +20,6 @@ const JWT_TOKEN = 'secret';
 const auth = (req, res, next) => {
   // const token = postmanCookie(req);
   const token = req.headers.authorization.split(' ')[1];
-  console.log('auth token: ', token);
   if (!token) {
     next(new UnauthorizedError());
   } else {
@@ -29,7 +27,6 @@ const auth = (req, res, next) => {
     try {
       payload = jwt.verify(token, JWT_TOKEN);
     } catch (err) {
-      console.log('НЕПРАВИЛЬНЫЙ ТОКЕН');
       next(new UnauthorizedError());
     }
 
