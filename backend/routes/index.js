@@ -33,9 +33,9 @@ router.get('/crash-test', () => {
 
 router.use('/signin', login);
 router.use('/signup', createUser);
-router.use(auth);
-router.use('/cards', cardRouter);
-router.use('/users', userRouter);
+// router.use(auth);
+router.use('/cards', auth, cardRouter);
+router.use('/users', auth, userRouter);
 router.use('*', notFound);
 
 router.use(errLogger);

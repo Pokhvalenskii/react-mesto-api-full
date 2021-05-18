@@ -18,7 +18,6 @@ const { JWT_TOKEN = 'dev-key' } = process.env;
 // }
 
 const auth = (req, res, next) => {
-  // const token = postmanCookie(req);
   const token = req.headers.authorization.split(' ')[1];
   if (!token) {
     next(new UnauthorizedError());
