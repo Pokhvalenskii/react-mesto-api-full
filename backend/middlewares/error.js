@@ -1,7 +1,6 @@
 const checkError = (err, req, res, next) => {
   const { statusCode = 500, message } = err;
-
-  if (err.details !== undefined) {
+  if (err.details !== undefined || err.name === 'CastError') {
     res.status(400).send({
       message: 'Неправильный, некорректный запрос',
     });

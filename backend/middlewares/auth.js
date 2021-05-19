@@ -18,7 +18,10 @@ const { JWT_TOKEN = 'dev-key' } = process.env;
 // }
 
 const auth = (req, res, next) => {
-  const token = req.headers.authorization.split(' ')[1];
+  // console.log('tokenTRUE: ', req.headers.authorization);
+  // const token = req.headers.authorization.split(' ')[1];
+  const token = req.headers.authorization ? req.headers.authorization.split(' ')[1] : null;
+
   if (!token) {
     next(new UnauthorizedError());
   } else {

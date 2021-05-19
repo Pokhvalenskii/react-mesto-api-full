@@ -23,6 +23,7 @@ const postCards = (req, res, next) => {
 const deleteCardById = (req, res, next) => {
   const { cardId } = req.params;
   Card.findById(cardId)
+    .orFail(new NotFoundError())
     .then((card) => {
       if (card) {
         if (JSON.stringify(card.owner) === JSON.stringify(req.user.id)) {
